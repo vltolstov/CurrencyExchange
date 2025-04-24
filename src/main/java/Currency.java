@@ -5,7 +5,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Currency {
 
-    private String id;
+    private Integer id;
     private String code;
     private String fullName;
     private String sign;

@@ -25,9 +25,9 @@ public class ExampleGetEntity {
         }
     }
 
-    private static Currency view(ResultSet resultSet) throws SQLException {
+    public static Currency view(ResultSet resultSet) throws SQLException {
         return new Currency(
-                resultSet.getString("Id"),
+                resultSet.getInt("Id"),
                 resultSet.getString("Code"),
                 resultSet.getString("FullName"),
                 resultSet.getString("Code")
