@@ -1,7 +1,7 @@
 package examples;
 
 import Utils.DatabaseConnectionManager;
-import model.Currency;
+import models.Currency;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

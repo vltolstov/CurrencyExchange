@@ -1,6 +1,6 @@
 package Utils;
 
-import exception.InvalidParameterException;
+import exceptions.InvalidParameterException;
 
 import java.util.Currency;
 import java.util.Set;

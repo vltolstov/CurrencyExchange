@@ -2,9 +2,9 @@ package dao;
 
 import Utils.DatabaseConnectionManager;
 import examples.ExampleGetEntity;
-import model.Currency;
-import exception.DatabaseOperationException;
-import exception.EntityExistException;
+import models.Currency;
+import exceptions.DatabaseOperationException;
+import exceptions.EntityExistException;
 import org.sqlite.SQLiteErrorCode;
 import org.sqlite.SQLiteException;
 
