@@ -1,7 +1,9 @@
+package dao;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudDAO<T, ID> {
+public interface CrudDao<T, ID> {
 
     List<T> findAll();
 

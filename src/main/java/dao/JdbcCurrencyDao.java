@@ -1,19 +1,22 @@
+package dao;
+
+import Utils.DatabaseConnectionManager;
+import examples.ExampleGetEntity;
+import model.Currency;
 import exception.DatabaseOperationException;
 import exception.EntityExistException;
 import org.sqlite.SQLiteErrorCode;
 import org.sqlite.SQLiteException;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcCurrencyDao implements CurrencyDAO {
+public class JdbcCurrencyDao implements CurrencyDao {
 
     @Override
     public Optional<Currency> findByCode(String code) {
@@ -31,7 +34,7 @@ public class JdbcCurrencyDao implements CurrencyDAO {
             }
 
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Currency with code " + code + " not found");
+            throw new DatabaseOperationException("model.Currency with code " + code + " not found");
         }
 
         return Optional.empty();
@@ -53,7 +56,7 @@ public class JdbcCurrencyDao implements CurrencyDAO {
             }
 
         } catch (SQLException e) {
-            throw new DatabaseOperationException("Currency with id " + integer + " not found");
+            throw new DatabaseOperationException("model.Currency with id " + integer + " not found");
         }
 
         return Optional.empty();
@@ -66,7 +69,7 @@ public class JdbcCurrencyDao implements CurrencyDAO {
         final String query = "SELECT * FROM Currencies";
 
         try(Connection connection = DatabaseConnectionManager.getConnection();
-        PreparedStatement statement = connection.prepareStatement(query)) {
+            PreparedStatement statement = connection.prepareStatement(query)) {
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -103,7 +106,7 @@ public class JdbcCurrencyDao implements CurrencyDAO {
             if(e instanceof SQLiteException) {
                 SQLiteException exception = (SQLiteException) e;
                 if (exception.getResultCode().code == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE.code) {
-                    throw new EntityExistException("Currency code " + entity.getCode() + " already exists");
+                    throw new EntityExistException("model.Currency code " + entity.getCode() + " already exists");
                 }
             }
             throw new DatabaseOperationException("Failed to save currency with code " + entity.getCode() + " to database");

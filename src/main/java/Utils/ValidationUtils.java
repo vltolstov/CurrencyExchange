@@ -29,7 +29,7 @@ public class ValidationUtils {
         }
 
         if(!currencyCodes.contains(code)){
-            throw new InvalidParameterException("Currency code not valid. Use ISO 4217 format");
+            throw new InvalidParameterException("model.Currency code not valid. Use ISO 4217 format");
         }
 
     }
