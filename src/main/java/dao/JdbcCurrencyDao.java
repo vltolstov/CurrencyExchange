@@ -85,7 +85,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
     }
 
     @Override
-    public void save(Currency entity) {
+    public Currency save(Currency entity) {
 
         final String query = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?)";
 
@@ -102,6 +102,8 @@ public class JdbcCurrencyDao implements CurrencyDao {
                 throw new DatabaseOperationException("Failed to save currency with code " + entity.getCode() + " to database");
             }
 
+            return getCurrency(resultSet);
+
         } catch (SQLException e) {
             if(e instanceof SQLiteException) {
                 SQLiteException exception = (SQLiteException) e;
@@ -114,7 +116,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
     }
 
     @Override
-    public void update(Currency entity) {
+    public Optional<Currency> update(Currency entity) {
 
         final String query = "UPDATE Currencies SET Code = ?, FullName = ?, Sign = ? WHERE ID = ?";
 
@@ -126,10 +128,24 @@ public class JdbcCurrencyDao implements CurrencyDao {
             statement.setString(3, entity.getSign());
             statement.setInt(4, entity.getId());
 
-            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
+
+            if(!resultSet.next()) {
+                return Optional.of(getCurrency(resultSet));
+            }
 
         } catch (SQLException e) {
             throw new DatabaseOperationException("Failed to update currency with code " + entity.getCode());
         }
+
+        return Optional.empty();
+    }
+
+    private static Currency getCurrency(ResultSet resultSet) throws SQLException {
+        return new Currency(
+                resultSet.getInt("ID"),
+                resultSet.getString("Code"),
+                resultSet.getString("FullName"),
+                resultSet.getString("Sign"));
     }
 }
