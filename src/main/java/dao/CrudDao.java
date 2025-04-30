@@ -9,8 +9,8 @@ public interface CrudDao<T, ID> {
 
     Optional<T> findById(ID id);
 
-    void save(T entity);
+    T save(T entity);
 
-    void update(T entity);
+    Optional<T> update(T entity);
 
 }
