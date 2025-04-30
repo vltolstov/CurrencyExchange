@@ -1,5 +1,6 @@
 package Utils;
 
+import dto.CurrencyRequestDto;
 import exceptions.InvalidParameterException;
 
 import java.util.Currency;
@@ -10,8 +11,25 @@ public class ValidationUtils {
 
     private static Set<String> currencyCodes;
 
-    public static void validate (){
+    public static void validate (CurrencyRequestDto currencyRequestDto){
         //валидация ввода при добавлении новой валюты
+        String name = currencyRequestDto.getName();
+        String code = currencyRequestDto.getCode();
+        String sign = currencyRequestDto.getSign();
+
+        if(name == null || name.isBlank()){
+            throw new InvalidParameterException("Invalid currency name");
+        }
+
+        if(code == null || code.isBlank()){
+            throw new InvalidParameterException("Invalid currency code");
+        }
+
+        if(sign == null || sign.isBlank()){
+            throw new InvalidParameterException("Invalid currency sign");
+        }
+
+        validateCurrencyCode(code);
     }
 
     public static void validateCurrencyCode(String code){
