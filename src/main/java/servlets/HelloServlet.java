@@ -9,11 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/")
-public class TestServlet extends HttpServlet {
+public class HelloServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doGet(req, resp);
-        resp.getWriter().println("Hello World");
+        resp.getWriter().println("Hello");
     }
 }
