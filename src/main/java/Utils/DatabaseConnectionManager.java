@@ -12,7 +12,7 @@ public class DatabaseConnectionManager {
 
     static {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:sqlite:database");
+        config.setJdbcUrl("jdbc:sqlite::resource:database");
         config.setDriverClassName("org.sqlite.JDBC");
 
         HIKARI_DATA_SOURCE = new HikariDataSource(config);
