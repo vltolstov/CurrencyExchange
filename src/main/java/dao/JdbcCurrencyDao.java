@@ -34,7 +34,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
             }
 
         } catch (SQLException e) {
-            throw new DatabaseOperationException("model.Currency with code " + code + " not found");
+            throw new DatabaseOperationException("Currency with code " + code + " not found");
         }
 
         return Optional.empty();
@@ -56,7 +56,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
             }
 
         } catch (SQLException e) {
-            throw new DatabaseOperationException("model.Currency with id " + integer + " not found");
+            throw new DatabaseOperationException("Currency with id " + integer + " not found");
         }
 
         return Optional.empty();
@@ -108,7 +108,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
             if(e instanceof SQLiteException) {
                 SQLiteException exception = (SQLiteException) e;
                 if (exception.getResultCode().code == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE.code) {
-                    throw new EntityExistException("model.Currency code " + entity.getCode() + " already exists");
+                    throw new EntityExistException("Currency code " + entity.getCode() + " already exists");
                 }
             }
             throw new DatabaseOperationException("Failed to save currency with code " + entity.getCode() + " to database");

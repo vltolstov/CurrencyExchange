@@ -12,7 +12,6 @@ public class ValidationUtils {
     private static Set<String> currencyCodes;
 
     public static void validate (CurrencyRequestDto currencyRequestDto){
-        //валидация ввода при добавлении новой валюты
         String name = currencyRequestDto.getName();
         String code = currencyRequestDto.getCode();
         String sign = currencyRequestDto.getSign();
@@ -47,7 +46,7 @@ public class ValidationUtils {
         }
 
         if(!currencyCodes.contains(code)){
-            throw new InvalidParameterException("model.Currency code not valid. Use ISO 4217 format");
+            throw new InvalidParameterException("Currency code not valid. Use ISO 4217 format");
         }
 
     }
