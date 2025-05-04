@@ -1,5 +1,5 @@
 ### Get all curerncies - 200 Ok
-GET http://localhost:8888/CurrencyExchange_1_0_war/currencies/
+GET http://localhost:8888/CurrencyExchange_1_0_war/currencies
 Accept: application/json
 
 ### Get currency by code - 200 Ok

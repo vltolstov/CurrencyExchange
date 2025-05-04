@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static Utils.MappingUtils.convertToDto;
 
-@WebServlet("/currencies/")
+@WebServlet("/currencies")
 public class CurrenciesServlet extends HttpServlet {
 
     private final CurrencyDao currencyDao = new JdbcCurrencyDao();
