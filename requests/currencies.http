@@ -1,0 +1,31 @@
+### Get all curerncies - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/currencies/
+Accept: application/json
+
+### Get currency by code - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/USD
+Accept: application/json
+
+### Get currency by code - 400 Bad Request
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/usd
+Accept: application/json
+
+### Get currency by code - 404 Not Found
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/OPO
+Accept: application/json
+
+### Get currency by code - 400 Bad Request
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/
+Accept: application/json
+
+### Get currency by id - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/1
+Accept: application/json
+
+### Get currency by id - 400 Bad Request
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/37hrhu74
+Accept: application/json
+
+### Get currency by id - 404 Not Found
+GET http://localhost:8888/CurrencyExchange_1_0_war/currency/111111
+Accept: application/json
