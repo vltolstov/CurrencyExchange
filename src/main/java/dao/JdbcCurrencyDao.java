@@ -30,7 +30,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
             ResultSet resultSet = statement.executeQuery();
 
             if(resultSet.next()) {
-                return Optional.of(ExampleGetEntity.view(resultSet));
+                return Optional.of(getCurrency(resultSet));
             }
 
         } catch (SQLException e) {
@@ -52,7 +52,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
             ResultSet resultSet = statement.executeQuery();
 
             if(resultSet.next()) {
-                return Optional.of(ExampleGetEntity.view(resultSet));
+                return Optional.of(getCurrency(resultSet));
             }
 
         } catch (SQLException e) {
@@ -74,7 +74,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
             ResultSet resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
-                currencies.add(ExampleGetEntity.view(resultSet));
+                currencies.add(getCurrency(resultSet));
             }
 
             return currencies;

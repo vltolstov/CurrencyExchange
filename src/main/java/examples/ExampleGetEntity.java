@@ -34,7 +34,7 @@ public class ExampleGetEntity {
                 resultSet.getInt("Id"),
                 resultSet.getString("Code"),
                 resultSet.getString("FullName"),
-                resultSet.getString("Code")
+                resultSet.getString("Sign")
         );
     }
 }
