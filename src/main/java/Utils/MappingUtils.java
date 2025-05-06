@@ -2,7 +2,9 @@ package Utils;
 
 import dto.CurrencyRequestDto;
 import dto.CurrencyResponseDto;
+import dto.ExchangeRateResponseDto;
 import models.Currency;
+import models.ExchangeRate;
 import org.modelmapper.ModelMapper;
 
 public class MappingUtils {
@@ -22,6 +24,10 @@ public class MappingUtils {
 
     public static CurrencyResponseDto convertToDto(Currency currency){
         return MODEL_MAPPER.map(currency, CurrencyResponseDto.class);
+    }
+
+    public static ExchangeRateResponseDto convertToDto(ExchangeRate exchangeRate){
+        return MODEL_MAPPER.map(exchangeRate, ExchangeRateResponseDto.class);
     }
 
 }
