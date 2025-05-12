@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,11 +61,75 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
 
     @Override
     public List<ExchangeRate> findAll() {
-        return List.of();
+
+        List<ExchangeRate> exchangeRates = new ArrayList<>();
+        final String query = """
+                        SELECT
+                            er.id AS id,
+                            bc.id AS base_id,
+                            bc.Code AS base_code,
+                            bc.FullName AS base_name,
+                            bc.Sign AS base_sign,
+                            tc.id AS target_id,
+                            tc.Code AS target_code,
+                            tc.FullName AS target_name,
+                            tc.Sign AS target_sign,
+                            er.rate AS rate
+                        FROM Exchange_rates er
+                        JOIN Currencies bc ON er.base_currency_id = bc.id
+                        JOIN Currencies tc ON er.target_currency_id = tc.id
+                        """;
+
+        try(Connection connection = DatabaseConnectionManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                exchangeRates.add(getExchangeRate(resultSet));
+            }
+
+            return exchangeRates;
+
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("All exchange rates not found");
+        }
     }
 
     @Override
-    public Optional<ExchangeRate> findById(Integer integer) {
+    public Optional<ExchangeRate> findById(Integer id) {
+
+        final String query = """
+                SELECT
+                    er.id AS id,
+                    bc.id AS base_id,
+                    bc.Code AS base_code,
+                    bc.FullName AS base_name,
+                    bc.Sign AS base_sign,
+                    tc.id AS target_id,
+                    tc.Code AS target_code,
+                    tc.FullName AS target_name,
+                    tc.Sign AS target_sign,
+                    er.rate AS rate
+                FROM Exchange_rates er
+                JOIN Currencies bc ON er.base_currency_id = bc.id
+                JOIN Currencies tc ON er.target_currency_id = tc.id
+                WHERE er.id = ?
+                """;
+
+        try(Connection connection = DatabaseConnectionManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                return Optional.of(getExchangeRate(resultSet));
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Exchange rate with id" + id + " not found");
+        }
+
         return Optional.empty();
     }
 
