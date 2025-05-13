@@ -4,6 +4,8 @@ import Utils.DatabaseConnectionManager;
 import exceptions.DatabaseOperationException;
 import models.Currency;
 import models.ExchangeRate;
+import org.sqlite.SQLiteErrorCode;
+import org.sqlite.SQLiteException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.SimpleTimeZone;
 
 public class JdbcExchangeRateDao implements ExchangeRateDao {
 
@@ -135,7 +138,33 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
 
     @Override
     public ExchangeRate save(ExchangeRate entity) {
-        return null;
+
+        final String query = "INSERT INTO Exchange_rates (base_currency_id, target_currency_id, rate) VALUES (?, ?, ?)";
+
+        try(Connection connection = DatabaseConnectionManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, entity.getBaseCurrency().getId());
+            preparedStatement.setInt(2, entity.getTargetCurrency().getId());
+            preparedStatement.setDouble(3, entity.getRate());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()){
+                throw new DatabaseOperationException("Failed to save exchange rate with id" + entity.getId() + " to database");
+            }
+
+            return getExchangeRate(resultSet);
+
+        } catch (SQLException e) {
+            if(e instanceof SQLiteException){
+                SQLiteException exception = (SQLiteException) e;
+                if(exception.getResultCode().code == SQLiteErrorCode.SQLITE_CONSTRAINT_UNIQUE.code) {
+                    throw new DatabaseOperationException("Exchange rate with code " + entity.getBaseCurrency().getCode() + entity.getTargetCurrency().getCode() + " already exists");
+                }
+            }
+            throw new DatabaseOperationException("Failde to save exchange rate with id" + entity.getId() + " to database");
+        }
     }
 
     @Override
