@@ -87,7 +87,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
     @Override
     public Currency save(Currency entity) {
 
-        final String query = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?)";
+        final String query = "INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?) RETURNING *";
 
         try(Connection connection = DatabaseConnectionManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query)) {
@@ -118,7 +118,7 @@ public class JdbcCurrencyDao implements CurrencyDao {
     @Override
     public Optional<Currency> update(Currency entity) {
 
-        final String query = "UPDATE Currencies SET Code = ?, FullName = ?, Sign = ? WHERE ID = ?";
+        final String query = "UPDATE Currencies SET Code = ?, FullName = ?, Sign = ? WHERE ID = ? RETURNING *";
 
         try(Connection connection = DatabaseConnectionManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query)) {
