@@ -29,3 +29,12 @@ Accept: application/json
 ### Get currency by id - 404 Not Found
 GET http://localhost:8888/CurrencyExchange_1_0_war/currency/111111
 Accept: application/json
+
+### POST currency - 200 Ok
+POST http://localhost:8888/CurrencyExchange_1_0_war/currencies
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+name=Manat&
+code=AZN&
+sign=₼
