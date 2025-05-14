@@ -139,7 +139,7 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
     @Override
     public ExchangeRate save(ExchangeRate entity) {
 
-        final String query = "INSERT INTO Exchange_rates (base_currency_id, target_currency_id, rate) VALUES (?, ?, ?)";
+        final String query = "INSERT INTO Exchange_rates (base_currency_id, target_currency_id, rate) VALUES (?, ?, ?) RETURNING id";
 
         try(Connection connection = DatabaseConnectionManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -169,6 +169,9 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
 
     @Override
     public Optional<ExchangeRate> update(ExchangeRate entity) {
+
+        //TO DO
+
         return Optional.empty();
     }
 
