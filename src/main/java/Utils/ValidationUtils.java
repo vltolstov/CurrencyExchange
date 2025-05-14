@@ -1,6 +1,7 @@
 package Utils;
 
 import dto.CurrencyRequestDto;
+import dto.ExchangeRateRequestDto;
 import exceptions.InvalidParameterException;
 
 import java.util.Currency;
@@ -29,6 +30,31 @@ public class ValidationUtils {
         }
 
         validateCurrencyCode(code);
+    }
+
+    public static void validate (ExchangeRateRequestDto exchangeRateRequestDto){
+        String baseCurrencyCode = exchangeRateRequestDto.getBaseCurrencyCode();
+        String targetCurrencyCode = exchangeRateRequestDto.getTargetCurrencyCode();
+        Double rate = exchangeRateRequestDto.getRate();
+
+        if(baseCurrencyCode == null || baseCurrencyCode.isBlank()) {
+            throw new InvalidParameterException("Invalid base currency code");
+        }
+
+        if(targetCurrencyCode == null || targetCurrencyCode.isBlank()) {
+            throw new InvalidParameterException("Invalid target currency code");
+        }
+
+        if(rate == null) {
+            throw new InvalidParameterException("Invalid rate");
+        }
+
+        if(rate < 0) {
+            throw new InvalidParameterException("Rate must be greater than zero");
+        }
+
+        validateCurrencyCode(baseCurrencyCode);
+        validateCurrencyCode(targetCurrencyCode);
     }
 
     public static void validateCurrencyCode(String code){
