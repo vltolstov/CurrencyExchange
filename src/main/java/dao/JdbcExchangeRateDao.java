@@ -154,7 +154,8 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
                 throw new DatabaseOperationException("Failed to save exchange rate with id" + entity.getId() + " to database");
             }
 
-            return getExchangeRate(resultSet);
+            entity.setId(resultSet.getInt("id"));
+            return entity;
 
         } catch (SQLException e) {
             if(e instanceof SQLiteException){
@@ -163,7 +164,7 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
                     throw new DatabaseOperationException("Exchange rate with code " + entity.getBaseCurrency().getCode() + entity.getTargetCurrency().getCode() + " already exists");
                 }
             }
-            throw new DatabaseOperationException("Failde to save exchange rate with id" + entity.getId() + " to database");
+            throw new DatabaseOperationException("Failed to save exchange rate with id " + entity.getId() + " to database");
         }
     }
 
