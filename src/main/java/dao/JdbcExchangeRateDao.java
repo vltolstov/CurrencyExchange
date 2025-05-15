@@ -171,7 +171,30 @@ public class JdbcExchangeRateDao implements ExchangeRateDao {
     @Override
     public Optional<ExchangeRate> update(ExchangeRate entity) {
 
-        //TO DO
+        final String query = """
+                UPDATE Exchange_rates
+                SET rate = ?
+                WHERE base_currency_id = ? AND target_currency_id = ?
+                RETURNING id
+                """;
+
+        try(Connection connection = DatabaseConnectionManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setDouble(1, entity.getRate());
+            preparedStatement.setInt(2, entity.getBaseCurrency().getId());
+            preparedStatement.setInt(3, entity.getTargetCurrency().getId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                entity.setId(resultSet.getInt("id"));
+                return Optional.of(entity);
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Failed to update exchange rate with id " + entity.getId() + " to database");
+        }
 
         return Optional.empty();
     }
