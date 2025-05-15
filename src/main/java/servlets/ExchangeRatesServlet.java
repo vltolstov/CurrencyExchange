@@ -41,22 +41,31 @@ public class ExchangeRatesServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // получаем данные из запроса
         String baseCurrencyCode = request.getParameter("baseCurrencyCode");
         String targetCurrencyCode = request.getParameter("targetCurrencyCode");
         String rate = request.getParameter("rate");
 
+        // проверяем корректность rate
         if(rate == null || rate.isBlank()) {
             throw new InvalidParameterException("Rate is required");
         }
 
+        //создаем DTO из полученных данных
         ExchangeRateRequestDto exchangeRateRequestDto = new ExchangeRateRequestDto(baseCurrencyCode, targetCurrencyCode, convertRateToDouble(rate));
 
+        //валидируем DTO
         ValidationUtils.validate(exchangeRateRequestDto);
 
+        //получаем новую сущность
+        // - сервис инициализиует сущность и передает в DAO
+        // - DAO сохраняет в базу и возвращает сущность
         ExchangeRate exchangeRate = exchangeRateService.save(exchangeRateRequestDto);
 
+        //устанавливаем статус если все ок
         response.setStatus(HttpServletResponse.SC_CREATED);
 
+        //сериализуем в json
         objectMapper.writeValue(response.getWriter(), exchangeRate);
     }
 
