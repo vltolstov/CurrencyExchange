@@ -1,0 +1,69 @@
+### Get All exchange rates - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchangeRates
+Accept: application/json
+
+### Get exchange rate for USD RUB - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchangeRate/USDRUB
+Accept: application/json
+
+### Get exchange rate for empty - 400 Bad Request
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchangeRate/
+Accept: application/json
+
+### Get unavailable exchange rate for RUBXCD - 404 Not Found
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchangeRate/RUBXCD
+Accept: application/json
+
+### POST new exchange rate - 201 Created
+POST http://localhost:8888/CurrencyExchange_1_0_war/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+baseCurrencyCode=JPY&
+targetCurrencyCode=RUB&
+rate=0.57
+
+### POST new exchange rate with missing parameter - 400 Bad Request
+POST http://localhost:8888/CurrencyExchange_1_0_war/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+baseCurrencyCode=USD&
+targetCurrencyCode=EUR
+
+### POST duplicate exchange rate - 409 Duplicate exchange rate
+POST http://localhost:8888/CurrencyExchange_1_0_war/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+baseCurrencyCode=USD&
+targetCurrencyCode=EUR&
+rate=0.87
+
+### POST new exchange rate USDSOM - 404 One of currency not found
+POST http://localhost:8888/CurrencyExchange_1_0_war/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+baseCurrencyCode=USD&
+targetCurrencyCode=SOM&
+rate=12920
+
+### PATCH exchange rate USDEUR with rate 0.8 - 200 Ok
+PATCH http://localhost:8888/CurrencyExchange_1_0_war/exchangeRate/USDRUB
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+rate=0.8
+
+### PATCH exchange rate USDEUR with empty parametr - 400 Bad Request
+PATCH http://localhost:8888/CurrencyExchange_1_0_war/exchangeRate/USDRUB
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+### POST new exchange rate RUBXCD - 404 One of currency not found
+PATCH http://localhost:8888/CurrencyExchange_1_0_war/exchangeRate/RUBXCD
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+
+rate=0.034
