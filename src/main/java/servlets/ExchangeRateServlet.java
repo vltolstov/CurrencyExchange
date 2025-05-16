@@ -82,6 +82,9 @@ public class ExchangeRateServlet extends HttpServlet {
             throw new InvalidParameterException("Rate is empty");
         }
 
+        exchangeRateDao.findByCodes(baseCurrencyCode, targetCurrencyCode)
+            .orElseThrow(() -> new NotFoundException("Exchange rate with codes " + baseCurrencyCode + " and " + targetCurrencyCode + " not found"));
+
         ExchangeRateRequestDto exchangeRateRequestDto = new ExchangeRateRequestDto(baseCurrencyCode, targetCurrencyCode, convertRateToDouble(rate));
         ExchangeRate exchangeRate = exchangeRateService.update(exchangeRateRequestDto);
 
