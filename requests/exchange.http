@@ -1,0 +1,23 @@
+### GET direct exchange for USD EUR - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=USD&to=EUR&amount=100
+Accept: application/json
+
+### GET indirect exchange for EUR USD - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=EUR&to=USD&amount=100
+Accept: application/json
+
+### GET cross exchange for EUR RUB - 200 Ok
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=EUR&to=RUB&amount=100
+Accept: application/json
+
+### GET exchange for USD XCD - 404 Not Found
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=USD&to=XCD&amount=100
+Accept: application/json
+
+### GET direct exchange for USD EUR without amount - 400 Bad Request
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=USD&to=EUR
+Accept: application/json
+
+### GET direct exchange for USD EUR with wrong amount type - 400 Bad Request
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=USD&to=EUR&amount=abc
+Accept: application/json
