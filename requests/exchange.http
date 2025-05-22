@@ -3,7 +3,7 @@ GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=USD&to=EUR&amou
 Accept: application/json
 
 ### GET indirect exchange for EUR USD - 200 Ok
-GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=EUR&to=USD&amount=100
+GET http://localhost:8888/CurrencyExchange_1_0_war/exchange?from=EUR&to=USD&amount=101.1
 Accept: application/json
 
 ### GET cross exchange for EUR RUB - 200 Ok
