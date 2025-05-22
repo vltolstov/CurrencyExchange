@@ -61,7 +61,7 @@ public class ValidationUtils {
     public static void validate(ExchangeRequestDto exchangeRequestDto){
         String fromCurrencyCode = exchangeRequestDto.getFromCurrencyCode();
         String toCurrencyCode = exchangeRequestDto.getToCurrencyCode();
-        Integer amount = exchangeRequestDto.getAmount();
+        Double amount = exchangeRequestDto.getAmount();
 
         if(fromCurrencyCode == null || fromCurrencyCode.isBlank()) {
             throw new InvalidParameterException("Invalid 'from' currency code");
