@@ -26,18 +26,26 @@ public class ExchangeServlet extends HttpServlet {
 
         String fromCurrencyCode = request.getParameter("from");
         String toCurrencyCode = request.getParameter("to");
-        Double amount = Double.parseDouble(request.getParameter("amount"));
+        String amount = request.getParameter("amount");
 
-        if(fromCurrencyCode == null || toCurrencyCode == null || amount == null) {
+        if(amount == null || amount.isBlank()) {
             throw new InvalidParameterException("Invalid request parameters");
         }
 
-        ExchangeRequestDto exchangeRequestDto = new ExchangeRequestDto(fromCurrencyCode, toCurrencyCode, amount);
+        ExchangeRequestDto exchangeRequestDto = new ExchangeRequestDto(fromCurrencyCode, toCurrencyCode, convertToDouble(amount));
 
         ValidationUtils.validate(exchangeRequestDto);
 
         ExchangeResponseDto exchangeResponseDto = exchangeService.exchange(exchangeRequestDto);
 
         objectMapper.writeValue(response.getWriter(), exchangeResponseDto);
+    }
+
+    private Double convertToDouble(String amount) {
+        try {
+            return Double.parseDouble(amount);
+        } catch (NumberFormatException e) {
+            throw new InvalidParameterException("Amount is not a number");
+        }
     }
 }

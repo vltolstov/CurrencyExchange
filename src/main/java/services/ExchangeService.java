@@ -8,6 +8,7 @@ import exceptions.NotFoundException;
 import models.ExchangeRate;
 import static Utils.MappingUtils.convertToDto;
 
+import java.security.PrivilegedExceptionAction;
 import java.util.Optional;
 
 public class ExchangeService {
@@ -18,7 +19,7 @@ public class ExchangeService {
 
         ExchangeRate exchangeRate = findExchangeRate(exchangeRequestDto)
                 .orElseThrow(() -> new NotFoundException(
-                        String.format("Exchange not found for '$s' and '$s' currency codes",
+                        String.format("Exchange not found for '%s' and '%s' currency codes",
                         exchangeRequestDto.getFromCurrencyCode(),
                         exchangeRequestDto.getToCurrencyCode()
                         )
@@ -73,6 +74,24 @@ public class ExchangeService {
     }
 
     private Optional<ExchangeRate> findCrossExchange(String fromCurrencyCode, String toCurrencyCode) {
-        return Optional.of(new ExchangeRate());
+        Optional<ExchangeRate> optionalUsdToBase = exchangeRateDao.findByCodes("USD", fromCurrencyCode);
+        Optional<ExchangeRate> optionalUsdToTarget = exchangeRateDao.findByCodes("USD", toCurrencyCode);
+
+        if(optionalUsdToBase.isEmpty() || optionalUsdToTarget.isEmpty()){
+            return Optional.empty();
+        }
+
+        ExchangeRate usdToBase = optionalUsdToBase.get();
+        ExchangeRate usdToTarget = optionalUsdToTarget.get();
+
+        Double rate = Math.round(usdToBase.getRate() / usdToTarget.getRate() * 100) / 100.0;
+
+        ExchangeRate exchangeRate = new ExchangeRate(
+                usdToBase.getTargetCurrency(),
+                usdToTarget.getTargetCurrency(),
+                rate
+        );
+
+        return Optional.of(exchangeRate);
     }
 }
